@@ -3,8 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class HomeServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<bool> addHobby(
-      {required List<String> hobbies, required String id}) async {
+  Future<bool> addHobby({
+    required List<String> hobbies,
+    required String id,
+  }) async {
     try {
       final userData =
           await _firestore.collection("users").where('id', isEqualTo: id).get();

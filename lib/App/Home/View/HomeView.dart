@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hobiapp/App/Components/MainFormTextField.dart';
 import 'package:hobiapp/App/Home/View%20Model/HomeViewModel.dart';
 import 'package:hobiapp/App/Home/View/Components/InfromationWidget.dart';
+import 'package:hobiapp/App/Home/View/drawerMenu.dart';
 import 'package:hobiapp/App/Splash/View%20Model/SplashViewModel.dart';
 import 'package:hobiapp/Utils/Default.dart';
 import 'package:hobiapp/Utils/Palette.dart';
@@ -18,20 +19,27 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final GlobalKey<FormState> _homeFormkey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     final splashVM = Provider.of<SplashViewModel>(context);
     final homeVM = Provider.of<HomeViewModel>(context);
     final width = MediaQuery.of(context).size.width;
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
+    return PopScope(
+      canPop: false,
       child: Scaffold(
+        key: _scaffoldkey,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: const Text("Anasayfa"),
           centerTitle: true,
+          leading: IconButton(
+            onPressed: () {
+              _scaffoldkey.currentState!.openDrawer();
+            },
+            icon: const Icon(Icons.menu),
+          ),
           actions: [
             IconButton(
               onPressed: () async {
@@ -44,6 +52,7 @@ class _HomeViewState extends State<HomeView> {
             ),
           ],
         ),
+        drawer: DrawerMenu(),
         body: Padding(
           padding: const EdgeInsets.symmetric(
               horizontal: Default.globalHPaddingValue),
