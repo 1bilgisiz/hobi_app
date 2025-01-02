@@ -14,4 +14,6 @@ class Palette {
   static const Color transparent = Colors.transparent;
   static const Color notificationSuccessAlertColor = Color(0XFF48D0B0);
   static const Color notificationFailureAlertColor = Color(0XFFFF6D81);
+
+  static var primaryColor;
 }

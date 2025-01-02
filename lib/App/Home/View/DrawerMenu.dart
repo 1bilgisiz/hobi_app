@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hobiapp/App/Auth/Login/View/LoginView.dart';
 import 'package:hobiapp/App/Home/View/HomeView.dart';
+import 'package:hobiapp/App/Settings/View/SettingView.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:hobiapp/App/Splash/View%20Model/SplashViewModel.dart';
@@ -15,90 +16,108 @@ class DrawerMenu extends StatelessWidget {
     return Drawer(
       child: Column(
         children: [
+          // Kullanıcı Bilgileri
           Container(
+            padding: const EdgeInsets.all(16.0),
             width: MediaQuery.of(context).size.width,
-            color: Colors.pink.shade100,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.pink.shade100, Colors.pink.shade300],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 50),
-                const SizedBox(
-                  width: 80,
-                  height: 80,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: Icon(Icons.person,
-                        size: 60, color: Colors.black), // Boyut büyütüldü
+                const SizedBox(height: 40),
+                const CircleAvatar(
+                  radius: 40,
+                  backgroundColor: Colors.white,
+                  child: Icon(Icons.person, size: 60, color: Colors.black),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  '${splashVM.user.name} ${splashVM.user.surname}',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 10),
-                Text(
-                  '${splashVM.user.name} ${splashVM.user.surname}', // İsim ve soyisim birleştirildi
-                  style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    const Icon(Icons.email, color: Colors.white70),
+                    const SizedBox(width: 8),
+                    Text(
+                      splashVM.user.email,
+                      style:
+                          const TextStyle(fontSize: 16, color: Colors.white70),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 10),
-                Text(
-                  splashVM.user.email,
-                  style: const TextStyle(fontSize: 16, color: Colors.white70),
+                Row(
+                  children: [
+                    const Icon(Icons.cake, color: Colors.white70),
+                    const SizedBox(width: 8),
+                    Text(
+                      "Doğum Tarihi: ${DateFormat("dd/MM/yyyy").format(splashVM.user.birthOfDate)}",
+                      style:
+                          const TextStyle(fontSize: 16, color: Colors.white70),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 10),
-                Text(
-                  "Doğum Tarihi: ${DateFormat("dd/MM/yyyy").format(splashVM.user.birthOfDate)}",
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16,
-                      color: Colors.white70),
+                const SizedBox(
+                  height: 10,
                 ),
-                const SizedBox(height: 10),
-                Text(
-                  splashVM.user.biography,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16,
-                      color: Colors.white70),
+                Row(
+                  children: [
+                    const Icon(Icons.computer, color: Colors.white70),
+                    const SizedBox(width: 8),
+                    Text(
+                      "Biyografi : ${splashVM.user.biography}",
+                      style:
+                          const TextStyle(fontSize: 16, color: Colors.white70),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 20),
               ],
             ),
           ),
 
-          // Menu Items
+          // Menü Öğeleri
           Expanded(
-            child: Column(
+            child: ListView(
               children: [
-                // Home Menu Item
                 ListTile(
-                  leading: Icon(Icons.home, color: Colors.pink.shade100),
-                  title: const Center(
-                    child: Text('Ana Sayfa'),
-                  ),
+                  leading: Icon(Icons.home, color: Colors.pink.shade300),
+                  title: const Text('Ana Sayfa'),
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomeView()));
+                      context,
+                      MaterialPageRoute(builder: (context) => const HomeView()),
+                    );
                   },
                 ),
-
-                // Settings Menu Item
                 ListTile(
                   leading: const Icon(Icons.settings, color: Colors.pink),
-                  title: const Center(
-                    child: Text('Ayarlar'),
-                  ),
+                  title: const Text('Ayarlar'),
                   onTap: () {
-                    Navigator.of(context).pushNamed('/settings');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SettingView()),
+                    );
                   },
                 ),
-
-                // Logout Menu Item
                 ListTile(
                   leading: const Icon(Icons.logout, color: Colors.red),
-                  title: const Center(
-                    child: Text('Çıkış Yap'),
-                  ),
+                  title: const Text('Çıkış Yap'),
                   onTap: () {
                     _showLogoutDialog(context);
                   },
@@ -111,7 +130,7 @@ class DrawerMenu extends StatelessWidget {
     );
   }
 
-  // Logout Confirmation Dialog
+  // Çıkış Diyaloğu
   void _showLogoutDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -126,8 +145,10 @@ class DrawerMenu extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const LoginView()));
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginView()),
+                );
               },
               child: const Text('Çıkış Yap'),
             ),

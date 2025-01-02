@@ -31,7 +31,7 @@ class MainFormTextField extends StatelessWidget {
     this.minLines,
     this.isSpaceAllowed = true,
     this.obscureText = false,
-    this.enabled = true,
+    this.enabled = true, required initialValue,
   });
 
   @override

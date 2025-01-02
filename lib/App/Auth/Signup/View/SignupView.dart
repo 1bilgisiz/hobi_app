@@ -47,6 +47,7 @@ class _SignupViewState extends State<SignupView> {
                         prefixIcon: const Icon(Icons.person),
                         validator: (name) => signupVM.validateName(name),
                         onChanged: (name) => signupVM.setName(name),
+                        initialValue: null,
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -57,6 +58,7 @@ class _SignupViewState extends State<SignupView> {
                         validator: (surname) =>
                             signupVM.validateSurname(surname),
                         onChanged: (surname) => signupVM.setSurname(surname),
+                        initialValue: null,
                       ),
                     ),
                   ],
@@ -67,6 +69,7 @@ class _SignupViewState extends State<SignupView> {
                   prefixIcon: const Icon(Icons.email),
                   validator: (email) => signupVM.validateEmail(email),
                   onChanged: (email) => signupVM.setEmail(email),
+                  initialValue: null,
                 ),
                 const SizedBox(height: 10),
                 MainFormTextField(
@@ -76,6 +79,7 @@ class _SignupViewState extends State<SignupView> {
                   validator: (biography) =>
                       signupVM.validateBiography(biography),
                   onChanged: (biography) => signupVM.setBiograpy(biography),
+                  initialValue: null,
                 ),
                 const SizedBox(height: 10),
                 MainDateAndTimePicker(
@@ -116,6 +120,7 @@ class _SignupViewState extends State<SignupView> {
                                 : Icons.visibility_off,
                           ),
                         ),
+                        initialValue: null,
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -138,6 +143,7 @@ class _SignupViewState extends State<SignupView> {
                                 : Icons.visibility_off,
                           ),
                         ),
+                        initialValue: null,
                       ),
                     ),
                   ],

@@ -68,6 +68,7 @@ class _LoginViewState extends State<LoginView> {
                       prefixIcon: const Icon(Icons.email),
                       validator: (email) => loginVM.validateEmail(email),
                       onChanged: (email) => loginVM.setEmail(email),
+                      initialValue: null,
                     ),
                     const SizedBox(height: 20),
                     MainFormTextField(
@@ -87,6 +88,7 @@ class _LoginViewState extends State<LoginView> {
                           color: Colors.white70,
                         ),
                       ),
+                      initialValue: null,
                     ),
                     const SizedBox(height: 30),
                     SizedBox(
@@ -151,6 +153,7 @@ class _LoginViewState extends State<LoginView> {
       context.pushNamed(RoutesNames.homeView);
     } else {
       showDialog(
+        // ignore: use_build_context_synchronously
         context: context,
         builder: (_) {
           return ShowMessageAlertWidget(

@@ -5,7 +5,7 @@ class HomeServices {
 
   Future<bool> addHobby({
     required List<String> hobbies,
-    required String id,
+    required String id, required String category,
   }) async {
     try {
       final userData =

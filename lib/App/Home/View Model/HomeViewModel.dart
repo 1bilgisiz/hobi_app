@@ -46,8 +46,8 @@ class HomeViewModel with ChangeNotifier {
   Future<String?> addHobby(SplashViewModel splashVM) async {
     List<String> hobbies = splashVM.user.hobbies;
     hobbies.add(_hobby);
-    final response =
-        await _homeServices.addHobby(hobbies: hobbies, id: splashVM.user.id);
+    final response = await _homeServices.addHobby(
+        hobbies: hobbies, id: splashVM.user.id, category: '');
     if (response) {
       reset();
       return null;
