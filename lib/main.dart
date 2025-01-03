@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hobiapp/App/Auth/Login/View%20Model/LoginViewModel.dart';
 import 'package:hobiapp/App/Auth/Signup/View%20Model/SignupViewModel.dart';
 import 'package:hobiapp/App/Home/View%20Model/HomeViewModel.dart';
+import 'package:hobiapp/App/Settings/ViewModel/SettingsViewModel.dart';
 import 'package:hobiapp/App/Splash/View%20Model/SplashViewModel.dart';
 import 'package:hobiapp/Routes/AppRouter.dart';
 import 'package:hobiapp/Theme/AppTheme.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => LoginViewModel()),
         ChangeNotifierProvider(create: (context) => SplashViewModel()),
         ChangeNotifierProvider(create: (context) => HomeViewModel()),
+        ChangeNotifierProvider(create: (context) => SettingsViewModel()),
       ],
       child: MaterialApp.router(
         title: "Hobi App",

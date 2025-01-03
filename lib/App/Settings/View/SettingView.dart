@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hobiapp/App/Home/View/DrawerMenu.dart';
+import 'package:hobiapp/App/Settings/ViewModel/SettingsViewModel.dart';
+import 'package:hobiapp/App/Splash/View%20Model/SplashViewModel.dart';
+import 'package:provider/provider.dart';
 
 class SettingView extends StatefulWidget {
   const SettingView({super.key});
@@ -10,17 +13,11 @@ class SettingView extends StatefulWidget {
 
 class _SettingViewState extends State<SettingView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _name = '';
-  String _surname = '';
-  String _email = '';
-  String _password = '';
-  String _confirmPassword = '';
-  DateTime? _birthDate;
-  bool _obscurePasswordText = true;
-  bool _obscureConfirmPasswordText = true;
 
   @override
   Widget build(BuildContext context) {
+    final splashVM = Provider.of<SplashViewModel>(context);
+    final settingsVM = Provider.of<SettingsViewModel>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Ayarlar'),
@@ -39,7 +36,6 @@ class _SettingViewState extends State<SettingView> {
                 children: [
                   Expanded(
                     child: TextFormField(
-                      initialValue: _name,
                       decoration: const InputDecoration(
                         labelText: 'Ad',
                         prefixIcon: Icon(Icons.person),
@@ -50,17 +46,12 @@ class _SettingViewState extends State<SettingView> {
                         }
                         return null;
                       },
-                      onChanged: (value) {
-                        setState(() {
-                          _name = value;
-                        });
-                      },
+                      onChanged: (value) => settingsVM.name = value,
                     ),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
                     child: TextFormField(
-                      initialValue: _surname,
                       decoration: const InputDecoration(
                         labelText: 'Soyad',
                         prefixIcon: Icon(Icons.person),
@@ -71,108 +62,28 @@ class _SettingViewState extends State<SettingView> {
                         }
                         return null;
                       },
-                      onChanged: (value) {
-                        setState(() {
-                          _surname = value;
-                        });
-                      },
+                      onChanged: (value) => settingsVM.surname = value,
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 10),
 
-              // Email Alanı
               TextFormField(
-                initialValue: _email,
+                maxLines: 5,
                 decoration: const InputDecoration(
-                  labelText: 'Email',
-                  prefixIcon: Icon(Icons.email),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty || !value.contains('@')) {
-                    return 'Geçerli bir email giriniz';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  setState(() {
-                    _email = value;
-                  });
-                },
-              ),
-              const SizedBox(height: 10),
-
-              // Şifre Alanı
-              TextFormField(
-                obscureText: _obscurePasswordText,
-                initialValue: _password,
-                decoration: InputDecoration(
-                  labelText: 'Yeni Şifre',
-                  prefixIcon: const Icon(Icons.lock),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _obscurePasswordText = !_obscurePasswordText;
-                      });
-                    },
-                    icon: Icon(
-                      _obscurePasswordText
-                          ? Icons.remove_red_eye
-                          : Icons.visibility_off,
-                    ),
-                  ),
+                  labelText: 'Biyografi',
+                  prefixIcon: Icon(Icons.person),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Şifre giriniz';
+                    return 'Biyografinizi giriniz';
                   }
                   return null;
                 },
-                onChanged: (value) {
-                  setState(() {
-                    _password = value;
-                  });
-                },
+                onChanged: (value) => settingsVM.biography = value,
               ),
-              const SizedBox(height: 10),
 
-              // Şifre Tekrar Alanı
-              TextFormField(
-                obscureText: _obscureConfirmPasswordText,
-                initialValue: _confirmPassword,
-                decoration: InputDecoration(
-                  labelText: 'Yeni Şifre Tekrarı',
-                  prefixIcon: const Icon(Icons.lock),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _obscureConfirmPasswordText =
-                            !_obscureConfirmPasswordText;
-                      });
-                    },
-                    icon: Icon(
-                      _obscureConfirmPasswordText
-                          ? Icons.remove_red_eye
-                          : Icons.visibility_off,
-                    ),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Şifre tekrarını giriniz';
-                  }
-                  if (value != _password) {
-                    return 'Şifreler uyuşmuyor';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  setState(() {
-                    _confirmPassword = value;
-                  });
-                },
-              ),
               const SizedBox(height: 10),
 
               // Doğum Tarihi Alanı
@@ -180,14 +91,12 @@ class _SettingViewState extends State<SettingView> {
                 onTap: () async {
                   DateTime? selectedDate = await showDatePicker(
                     context: context,
-                    initialDate: _birthDate ?? DateTime.now(),
+                    initialDate: settingsVM.birthDate ?? DateTime.now(),
                     firstDate: DateTime(1900),
                     lastDate: DateTime.now(),
                   );
                   if (selectedDate != null) {
-                    setState(() {
-                      _birthDate = selectedDate;
-                    });
+                    settingsVM.birthDate = selectedDate;
                   }
                 },
                 child: InputDecorator(
@@ -196,9 +105,9 @@ class _SettingViewState extends State<SettingView> {
                     prefixIcon: Icon(Icons.calendar_today),
                   ),
                   child: Text(
-                    _birthDate == null
+                    settingsVM.birthDate == null
                         ? 'Tarih seçiniz'
-                        : '${_birthDate!.day}/${_birthDate!.month}/${_birthDate!.year}',
+                        : '${settingsVM.birthDate!.day}/${settingsVM.birthDate!.month}/${settingsVM.birthDate!.year}',
                     style: const TextStyle(fontSize: 16),
                   ),
                 ),
@@ -210,12 +119,20 @@ class _SettingViewState extends State<SettingView> {
                 height: 50,
                 width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      // Form geçerli ise işlemi gerçekleştir
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Ayarlar güncellendi')),
-                      );
+                      final response = await settingsVM.updateSettings(
+                          id: splashVM.user.id, splashVM: splashVM);
+                      if (response) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Ayarlar güncellendi')),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text('Ayarlar güncellenmedi')),
+                        );
+                      }
                     }
                   },
                   style: ElevatedButton.styleFrom(
