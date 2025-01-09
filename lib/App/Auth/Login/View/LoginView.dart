@@ -17,6 +17,7 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final GlobalKey<FormState> _loginFormkey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _resetFormkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +136,131 @@ class _LoginViewState extends State<LoginView> {
                           ),
                         ),
                       ],
-                    )
+                    ),
+                    const SizedBox(height: 10),
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(16.0),
+                            ),
+                          ),
+                          context: context,
+                          barrierColor: Colors.transparent,
+                          backgroundColor: Colors.white,
+                          builder: (context) => StatefulBuilder(
+                            builder: (context, setValue) {
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: MediaQuery.of(context)
+                                        .viewInsets
+                                        .bottom),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: const BorderRadius.vertical(
+                                      top: Radius.circular(20.0),
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(.1),
+                                        spreadRadius: 1,
+                                        blurRadius: 5,
+                                      )
+                                    ],
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 15,
+                                    vertical: 15,
+                                  ),
+                                  width: width,
+                                  child: SizedBox(
+                                    height: 165,
+                                    width: width,
+                                    child: Form(
+                                      key: _resetFormkey,
+                                      child: Column(
+                                        children: [
+                                          MainFormTextField(
+                                            hintText: "Email",
+                                            prefixIcon: const Icon(Icons.email),
+                                            validator: (email) =>
+                                                loginVM.validateEmail(email),
+                                            onChanged: (email) => setValue(
+                                              () =>
+                                                  loginVM.setResetEmail(email),
+                                            ),
+                                            initialValue: null,
+                                          ),
+                                          const SizedBox(height: 10),
+                                          InkWell(
+                                            onTap: () async {
+                                              if (_resetFormkey.currentState!
+                                                  .validate()) {
+                                                final response = await loginVM
+                                                    .resetPassword();
+                                                if (response != null) {
+                                                  showDialog(
+                                                    // ignore: use_build_context_synchronously
+                                                    context: context,
+                                                    builder: (_) {
+                                                      return ShowMessageAlertWidget(
+                                                        title: "Başarısız",
+                                                        description: response,
+                                                      );
+                                                    },
+                                                  );
+                                                } else {
+                                                  Navigator.pop(context);
+                                                  showDialog(
+                                                    // ignore: use_build_context_synchronously
+                                                    context: context,
+                                                    builder: (_) {
+                                                      return const ShowMessageAlertWidget(
+                                                        title: "Başarılı",
+                                                        description:
+                                                            'Şifre değiştirme bağlantısı mail adreinize göndeirlmiştir.',
+                                                      );
+                                                    },
+                                                  );
+                                                }
+                                              }
+                                            },
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              width: width,
+                                              height: 60,
+                                              decoration: BoxDecoration(
+                                                color: Colors.deepPurple,
+                                                borderRadius:
+                                                    BorderRadius.circular(14),
+                                              ),
+                                              child: const Text(
+                                                "Şifreyi sıfırla",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        "Şifremi unuttum",
+                        style: TextStyle(color: Colors.white70),
+                      ),
+                    ),
                   ],
                 ),
               ),

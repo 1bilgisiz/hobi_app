@@ -73,16 +73,22 @@ class DrawerMenu extends StatelessWidget {
                   height: 10,
                 ),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Icon(Icons.computer, color: Colors.white70),
                     const SizedBox(width: 8),
-                    Text(
-                      "Biyografi : ${splashVM.user.biography}",
-                      style:
-                          const TextStyle(fontSize: 16, color: Colors.white70),
-                    ),
-                    SizedBox(
-                      height: 10,
+                    Expanded(
+                      child: SizedBox(
+                        height: 60,
+                        child: Text(
+                          "Biyografi : ${splashVM.user.biography}",
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.white70,
+                          ),
+                          overflow: TextOverflow.fade,
+                        ),
+                      ),
                     ),
                   ],
                 ),

@@ -114,4 +114,14 @@ class AuthServices implements AuthBase {
           success: false, code: e.code, user: null, hobiUser: null);
     }
   }
+
+  @override
+  Future<bool> resetPassword({required String email}) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      return true;
+    } on FirebaseAuthException {
+      return false;
+    }
+  }
 }
